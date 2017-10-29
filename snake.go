@@ -14,23 +14,23 @@ const (
 
 type Snake struct {
 	*tl.Entity
-	body []coord
+	body []Coord
 	direction Direction
 }
 
 func NewSnake() *Snake {
 	s := new(Snake)
 	s.Entity = tl.NewEntity(1, 1, 1, 1)
-	s.body = []coord {
-		coord{3, 0},
-		coord{4, 0},
-		coord{5, 0}, // head
+	s.body = []Coord {
+		Coord{3, 0},
+		Coord{4, 0},
+		Coord{5, 0}, // head
 	}
 	s.direction = RIGHT
 	return s
 }
 
-func (snake *Snake) Head() *coord {
+func (snake *Snake) Head() *Coord {
 	return &snake.body[len(snake.body) - 1]
 }
 
