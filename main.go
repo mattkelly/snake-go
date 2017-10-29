@@ -16,5 +16,6 @@ func main() {
 	level.AddEntity(snake)
 
 	game.Screen().SetLevel(level)
+	game.Screen().SetFps(10)
 	game.Start()
 }

@@ -47,6 +47,19 @@ func (snake *Snake) UpdatePosition(x, y int) {
 }
 
 func (snake *Snake) Draw(screen *tl.Screen) {
+	// Update position based on direction
+	x, y := snake.Position()
+	switch snake.direction {
+	case RIGHT:
+		snake.UpdatePosition(x + 1, y)
+	case LEFT:
+		snake.UpdatePosition(x - 1, y)
+	case UP:
+		snake.UpdatePosition(x, y - 1)
+	case DOWN:
+		snake.UpdatePosition(x, y + 1)
+	}
+
 	// Draw snake
 	for _, c := range snake.body {
 		screen.RenderCell(c.x, c.y, &tl.Cell{
@@ -69,18 +82,5 @@ func (snake *Snake) Tick(event tl.Event) {
 		case tl.KeyArrowDown:
 			snake.direction = DOWN
 		}
-	}
-
-	// Move
-	x, y := snake.Position()
-	switch snake.direction {
-	case RIGHT:
-		snake.UpdatePosition(x + 1, y)
-	case LEFT:
-		snake.UpdatePosition(x - 1, y)
-	case UP:
-		snake.UpdatePosition(x, y - 1)
-	case DOWN:
-		snake.UpdatePosition(x, y + 1)
 	}
 }
