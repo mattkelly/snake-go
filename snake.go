@@ -20,11 +20,11 @@ type Snake struct {
 
 func NewSnake() *Snake {
 	s := new(Snake)
-	s.Entity = tl.NewEntity(1, 1, 1, 1)
+	s.Entity = tl.NewEntity(5, 5, 5, 5)
 	s.body = []Coord {
-		Coord{3, 0},
-		Coord{4, 0},
-		Coord{5, 0}, // head
+		Coord{3, 5},
+		Coord{4, 5},
+		Coord{5, 5}, // head
 	}
 	s.direction = RIGHT
 	return s
@@ -43,7 +43,6 @@ func (snake *Snake) UpdatePosition(x, y int) {
 	// Update head
 	snake.SetPosition(x, y) // position of Entity is just the head
 	snake.Head().x, snake.Head().y = snake.Position()
-
 }
 
 func (snake *Snake) Draw(screen *tl.Screen) {

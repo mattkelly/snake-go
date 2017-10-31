@@ -7,12 +7,13 @@ func main() {
 
 	level := tl.NewBaseLevel(tl.Cell{
 		Bg: tl.ColorGreen,
-		Fg: tl.ColorRed,
-		Ch: '.',
 	})
 
+	// TODO dynamically size based on screen width
+	border := NewBorder(50, 20)
 	snake := NewSnake()
 
+	level.AddEntity(border)
 	level.AddEntity(snake)
 
 	game.Screen().SetLevel(level)
