@@ -20,7 +20,7 @@ type Snake struct {
 
 func NewSnake() *Snake {
 	s := new(Snake)
-	s.Entity = tl.NewEntity(5, 5, 5, 5)
+	s.Entity = tl.NewEntity(5, 5, 1, 1)
 	s.body = []Coord {
 		Coord{3, 5},
 		Coord{4, 5},
@@ -69,17 +69,26 @@ func (snake *Snake) Draw(screen *tl.Screen) {
 }
 
 func (snake *Snake) Tick(event tl.Event) {
-	// Find new direction
+	// Find new direction - but you can't go
+	// back from where you came.
 	if event.Type == tl.EventKey {
 		switch event.Key {
 		case tl.KeyArrowRight:
-			snake.direction = RIGHT
+			if snake.direction != LEFT {
+				snake.direction = RIGHT
+			}
 		case tl.KeyArrowLeft:
-			snake.direction = LEFT
+			if snake.direction != RIGHT {
+				snake.direction = LEFT
+			}
 		case tl.KeyArrowUp:
-			snake.direction = UP
+			if snake.direction != DOWN {
+				snake.direction = UP
+			}
 		case tl.KeyArrowDown:
-			snake.direction = DOWN
+			if snake.direction != UP {
+				snake.direction = DOWN
+			}
 		}
 	}
 }
