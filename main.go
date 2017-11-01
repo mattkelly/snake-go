@@ -9,14 +9,13 @@ func main() {
 		Bg: tl.ColorGreen,
 	})
 
-	// TODO dynamically size based on screen width
-	border := NewBorder(50, 20)
+	border := NewBorder()
 	snake := NewSnake()
 
 	level.AddEntity(border)
 	level.AddEntity(snake)
 
 	game.Screen().SetLevel(level)
-	game.Screen().SetFps(10)
+	game.Screen().SetFps(15)
 	game.Start()
 }
