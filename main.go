@@ -11,9 +11,11 @@ func main() {
 
 	border := NewBorder()
 	snake := NewSnake()
+	food := NewFood(Coord{20, 20})
 
 	level.AddEntity(border)
 	level.AddEntity(snake)
+	level.AddEntity(food)
 
 	game.Screen().SetLevel(level)
 	game.Screen().SetFps(15)

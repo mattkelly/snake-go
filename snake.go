@@ -1,7 +1,6 @@
 package main
 
 import tl "github.com/JoelOtter/termloop"
-//import "fmt"
 
 type Direction int
 
@@ -36,6 +35,10 @@ func NewSnake() *Snake {
 
 func (snake *Snake) Head() *Coord {
 	return &snake.body[len(snake.body) - 1]
+}
+
+func (snake *Snake) Grow(amount int) {
+	snake.bodyLen += amount
 }
 
 // Draw() is called every frame, whereas Tick() is
@@ -94,5 +97,22 @@ func (snake *Snake) Tick(event tl.Event) {
 				snake.direction = DOWN
 			}
 		}
+	}
+}
+
+func (snake *Snake) handleFoodCollision() {
+	snake.Grow(5)
+}
+
+func handleBorderCollision() {
+	// dead
+}
+
+func (snake *Snake) Collide(collision tl.Physical) {
+	switch collision.(type) {
+	case *Food:
+		snake.handleFoodCollision()
+	case *Border:
+		handleBorderCollision()
 	}
 }
