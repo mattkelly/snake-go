@@ -6,7 +6,7 @@ func main() {
 	game := tl.NewGame()
 
 	level := tl.NewBaseLevel(tl.Cell{
-		Bg: tl.ColorGreen,
+		Bg: tl.ColorBlack,
 	})
 
 	border := NewBorder()

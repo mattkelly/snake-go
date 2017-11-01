@@ -8,8 +8,6 @@ type Border struct {
 	height int
 }
 
-// TODO Draw() knows about screen anyway so use screen directly
-// for height/width?
 func NewBorder() *Border {
 	b := new(Border)
 	b.Entity = tl.NewEntity(1, 1, 1, 1)

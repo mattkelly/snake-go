@@ -15,6 +15,7 @@ const (
 type Snake struct {
 	*tl.Entity
 	body []Coord
+	bodyLen int
 	direction Direction
 }
 
@@ -26,6 +27,9 @@ func NewSnake() *Snake {
 		Coord{4, 5},
 		Coord{5, 5}, // head
 	}
+	// Need to track length explicitly for the case
+	// where we're actively growing
+	s.bodyLen = len(s.body)
 	s.direction = RIGHT
 	return s
 }
@@ -34,35 +38,35 @@ func (snake *Snake) Head() *Coord {
 	return &snake.body[len(snake.body) - 1]
 }
 
-func (snake *Snake) UpdatePosition(x, y int) {
-	// Update body
-	for i := 0; i < len(snake.body) - 1; i++ {
-		snake.body[i] = snake.body[i + 1]
-	}
-
-	// Update head
-	snake.SetPosition(x, y) // position of Entity is just the head
-	snake.Head().x, snake.Head().y = snake.Position()
-}
-
+// Draw() is called every frame, whereas Tick() is
+// only called on events.
 func (snake *Snake) Draw(screen *tl.Screen) {
 	// Update position based on direction
-	x, y := snake.Position()
+	newHead := *snake.Head()
 	switch snake.direction {
 	case RIGHT:
-		snake.UpdatePosition(x + 1, y)
+		newHead.x += 1
 	case LEFT:
-		snake.UpdatePosition(x - 1, y)
+		newHead.x -= 1
 	case UP:
-		snake.UpdatePosition(x, y - 1)
+		newHead.y -= 1
 	case DOWN:
-		snake.UpdatePosition(x, y + 1)
+		newHead.y += 1
 	}
+
+	if (snake.bodyLen > len(snake.body)) {
+		// We must be growing
+		snake.body = append(snake.body, newHead)
+	} else {
+		snake.body = append(snake.body[1:], newHead)
+	}
+
+	snake.SetPosition(newHead.x, newHead.y)
 
 	// Draw snake
 	for _, c := range snake.body {
 		screen.RenderCell(c.x, c.y, &tl.Cell{
-			Fg: tl.ColorBlack,
+			Fg: tl.ColorGreen,
 			Ch: 'o',
 		})
 	}
