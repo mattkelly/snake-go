@@ -8,4 +8,8 @@ Play snake in your terminal. Built using [termloop](https://github.com/JoelOtter
 - Play it: `$GOPATH/bin/snake-go`
 
 # Contributing
-Please do
+Please do.
+- [ ] Overlay message box with score upon dying (don't just flash red)
+- [ ] Implement game difficulty options: easy, normal, hard
+- [ ] (Maybe) Dynamically size border based on e.g. terminal size, user input
+- [ ] (Maybe) Implement "play again" option
