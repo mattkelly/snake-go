@@ -1,8 +1,17 @@
 package main
 
-import tl "github.com/JoelOtter/termloop"
+import (
+	"math/rand"
+	"time"
+
+	tl "github.com/JoelOtter/termloop"
+)
+
+var score = 0
+var level *tl.BaseLevel
 
 func main() {
+	rand.Seed(time.Now().UnixNano())
 	game := tl.NewGame()
 
 	level := tl.NewBaseLevel(tl.Cell{
@@ -11,13 +20,13 @@ func main() {
 
 	border := NewBorder()
 	snake := NewSnake()
-	food := NewFood(Coord{20, 20})
+	food := NewFood()
 
 	level.AddEntity(border)
 	level.AddEntity(snake)
 	level.AddEntity(food)
 
 	game.Screen().SetLevel(level)
-	game.Screen().SetFps(15)
+	game.Screen().SetFps(10)
 	game.Start()
 }

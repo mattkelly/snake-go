@@ -41,6 +41,10 @@ func (snake *Snake) Grow(amount int) {
 	snake.bodyLen += amount
 }
 
+func (snake *Snake) IsGrowing() bool {
+	return snake.bodyLen > len(snake.body)
+}
+
 // Draw() is called every frame, whereas Tick() is
 // only called on events.
 func (snake *Snake) Draw(screen *tl.Screen) {
@@ -57,7 +61,7 @@ func (snake *Snake) Draw(screen *tl.Screen) {
 		newHead.y += 1
 	}
 
-	if (snake.bodyLen > len(snake.body)) {
+	if snake.IsGrowing() {
 		// We must be growing
 		snake.body = append(snake.body, newHead)
 	} else {
@@ -101,10 +105,10 @@ func (snake *Snake) Tick(event tl.Event) {
 }
 
 func (snake *Snake) handleFoodCollision() {
-	snake.Grow(5)
+	snake.Grow(1)
 }
 
-func handleBorderCollision() {
+func (snake *Snake) handleBorderCollision() {
 	// dead
 }
 
@@ -113,6 +117,6 @@ func (snake *Snake) Collide(collision tl.Physical) {
 	case *Food:
 		snake.handleFoodCollision()
 	case *Border:
-		handleBorderCollision()
+		snake.handleBorderCollision()
 	}
 }
