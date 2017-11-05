@@ -8,13 +8,21 @@ import (
 )
 
 var score = 0
-var level *tl.BaseLevel
+var game *tl.Game
+
+func EndGame() {
+	endLevel := tl.NewBaseLevel(tl.Cell{
+		Bg: tl.ColorRed,
+	})
+
+	game.Screen().SetLevel(endLevel)
+}
 
 func main() {
 	rand.Seed(time.Now().UnixNano())
-	game := tl.NewGame()
+	game = tl.NewGame()
 
-	level := tl.NewBaseLevel(tl.Cell{
+	mainLevel := tl.NewBaseLevel(tl.Cell{
 		Bg: tl.ColorBlack,
 	})
 
@@ -22,11 +30,11 @@ func main() {
 	snake := NewSnake()
 	food := NewFood()
 
-	level.AddEntity(border)
-	level.AddEntity(snake)
-	level.AddEntity(food)
+	mainLevel.AddEntity(border)
+	mainLevel.AddEntity(snake)
+	mainLevel.AddEntity(food)
 
-	game.Screen().SetLevel(level)
+	game.Screen().SetLevel(mainLevel)
 	game.Screen().SetFps(10)
 	game.Start()
 }

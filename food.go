@@ -43,7 +43,7 @@ func (food *Food) moveToRandomPosition() {
 
 func (food *Food) handleSnakeCollision() {
 	food.moveToRandomPosition()
-	score += 1
+	score++
 }
 
 func (food *Food) Collide(collision tl.Physical) {

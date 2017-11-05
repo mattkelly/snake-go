@@ -37,12 +37,30 @@ func (snake *Snake) Head() *Coord {
 	return &snake.body[len(snake.body) - 1]
 }
 
-func (snake *Snake) Grow(amount int) {
+func (snake *Snake) grow(amount int) {
 	snake.bodyLen += amount
 }
 
-func (snake *Snake) IsGrowing() bool {
+func (snake *Snake) isGrowing() bool {
 	return snake.bodyLen > len(snake.body)
+}
+
+func (snake *Snake) isCollidingWithSelf() bool {
+	for i := 0; i < len(snake.body) - 1; i++ {
+		if *snake.Head() == snake.body[i] {
+			return true
+		}
+	}
+	return false
+}
+
+func (snake *Snake) isCollidingWithBorder() bool {
+	for i := 0; i < len(snake.body) - 1; i++ {
+		if *snake.Head() == snake.body[i] {
+			return true
+		}
+	}
+	return false
 }
 
 // Draw() is called every frame, whereas Tick() is
@@ -61,7 +79,7 @@ func (snake *Snake) Draw(screen *tl.Screen) {
 		newHead.y += 1
 	}
 
-	if snake.IsGrowing() {
+	if snake.isGrowing() {
 		// We must be growing
 		snake.body = append(snake.body, newHead)
 	} else {
@@ -69,6 +87,10 @@ func (snake *Snake) Draw(screen *tl.Screen) {
 	}
 
 	snake.SetPosition(newHead.x, newHead.y)
+
+	if snake.isCollidingWithSelf() {
+		EndGame()
+	}
 
 	// Draw snake
 	for _, c := range snake.body {
@@ -105,11 +127,11 @@ func (snake *Snake) Tick(event tl.Event) {
 }
 
 func (snake *Snake) handleFoodCollision() {
-	snake.Grow(1)
+	snake.grow(1)
 }
 
 func (snake *Snake) handleBorderCollision() {
-	// dead
+	EndGame()
 }
 
 func (snake *Snake) Collide(collision tl.Physical) {
