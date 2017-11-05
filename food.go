@@ -18,39 +18,39 @@ func NewFood() *Food {
 	return f
 }
 
-func (food *Food) Draw(screen *tl.Screen) {
-	screen.RenderCell(food.coord.x, food.coord.y, &tl.Cell{
+func (f *Food) Draw(screen *tl.Screen) {
+	screen.RenderCell(f.coord.x, f.coord.y, &tl.Cell{
 		Fg: tl.ColorGreen,
 		Ch: '*',
 	})
 }
 
-func (food Food) Position() (int, int) {
-	return food.coord.x, food.coord.y
+func (f Food) Position() (int, int) {
+	return f.coord.x, f.coord.y
 }
 
-func (food Food) Size() (int, int) {
+func (f Food) Size() (int, int) {
 	return 1, 1
 }
 
-func (food *Food) moveToRandomPosition() {
+func (f *Food) moveToRandomPosition() {
 	// TODO actual range
-	newX := randInRange(1, 50)
-	newY := randInRange(1, 50)
-	food.coord.x, food.coord.y = newX, newY
-	food.SetPosition(newX, newY)
+	newX := randInRange(1, border.width - 1)
+	newY := randInRange(1, border.height - 1)
+	f.coord.x, f.coord.y = newX, newY
+	f.SetPosition(newX, newY)
 }
 
-func (food *Food) handleSnakeCollision() {
-	food.moveToRandomPosition()
-	score++
+func (f *Food) handleSnakeCollision() {
+	f.moveToRandomPosition()
+	IncreaseScore(1)
 }
 
-func (food *Food) Collide(collision tl.Physical) {
+func (f *Food) Collide(collision tl.Physical) {
 	switch collision.(type) {
 	case *Snake:
 		// It better be a snake that we're colliding with...
-		food.handleSnakeCollision()
+		f.handleSnakeCollision()
 	}
 }
 

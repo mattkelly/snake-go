@@ -4,34 +4,44 @@ import tl "github.com/JoelOtter/termloop"
 
 type Border struct {
 	*tl.Entity
-	width int
-	height int
+	width, height int
+	coords map[Coord]int
 }
 
-func NewBorder() *Border {
+func NewBorder(width, height int) *Border {
 	b := new(Border)
 	b.Entity = tl.NewEntity(1, 1, 1, 1)
+	b.width, b.height = width, height
+
+	b.coords = make(map[Coord]int)
+
+	// Top and bottom
+	for x := 0; x < width; x++ {
+		b.coords[Coord{x, 0}] = 1
+		b.coords[Coord{x, b.height}] = 1
+	}
+
+	// Left and right
+	for y := 0; y < height + 1; y++ {
+		b.coords[Coord{0, y}] = 1
+		b.coords[Coord{b.width, y}] = 1
+	}
+
 	return b
 }
 
-func (border *Border) Draw(screen *tl.Screen) {
-	// Draw top and bottom
-	width, height := screen.Size()
-	for x := 0; x < width; x++ {
-		screen.RenderCell(x, 0, &tl.Cell{
-			Bg: tl.ColorBlue,
-		})
-		screen.RenderCell(x, height - 1, &tl.Cell{
-			Bg: tl.ColorBlue,
-		})
+func (b *Border) Contains(coord Coord) bool {
+	_, exists := b.coords[coord]
+	return exists
+}
+
+func (b *Border) Draw(screen *tl.Screen) {
+	if (b == nil) {
+		return
 	}
 
-	// Draw left and right sides
-	for y := 0; y < height; y++ {
-		screen.RenderCell(0, y, &tl.Cell{
-			Bg: tl.ColorBlue,
-		})
-		screen.RenderCell(width - 1, y, &tl.Cell{
+	for c := range b.coords {
+		screen.RenderCell(c.x, c.y, &tl.Cell{
 			Bg: tl.ColorBlue,
 		})
 	}

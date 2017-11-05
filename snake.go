@@ -33,42 +33,37 @@ func NewSnake() *Snake {
 	return s
 }
 
-func (snake *Snake) Head() *Coord {
-	return &snake.body[len(snake.body) - 1]
+func (s *Snake) Head() *Coord {
+	return &s.body[len(s.body) - 1]
 }
 
-func (snake *Snake) grow(amount int) {
-	snake.bodyLen += amount
+func (s *Snake) grow(amount int) {
+	s.bodyLen += amount
 }
 
-func (snake *Snake) isGrowing() bool {
-	return snake.bodyLen > len(snake.body)
+func (s *Snake) isGrowing() bool {
+	return s.bodyLen > len(s.body)
 }
 
-func (snake *Snake) isCollidingWithSelf() bool {
-	for i := 0; i < len(snake.body) - 1; i++ {
-		if *snake.Head() == snake.body[i] {
+func (s *Snake) isCollidingWithSelf() bool {
+	for i := 0; i < len(s.body) - 1; i++ {
+		if *s.Head() == s.body[i] {
 			return true
 		}
 	}
 	return false
 }
 
-func (snake *Snake) isCollidingWithBorder() bool {
-	for i := 0; i < len(snake.body) - 1; i++ {
-		if *snake.Head() == snake.body[i] {
-			return true
-		}
-	}
-	return false
+func (s *Snake) isCollidingWithBorder() bool {
+	return border.Contains(*s.Head())
 }
 
 // Draw() is called every frame, whereas Tick() is
 // only called on events.
-func (snake *Snake) Draw(screen *tl.Screen) {
+func (s *Snake) Draw(screen *tl.Screen) {
 	// Update position based on direction
-	newHead := *snake.Head()
-	switch snake.direction {
+	newHead := *s.Head()
+	switch s.direction {
 	case RIGHT:
 		newHead.x += 1
 	case LEFT:
@@ -79,21 +74,21 @@ func (snake *Snake) Draw(screen *tl.Screen) {
 		newHead.y += 1
 	}
 
-	if snake.isGrowing() {
+	if s.isGrowing() {
 		// We must be growing
-		snake.body = append(snake.body, newHead)
+		s.body = append(s.body, newHead)
 	} else {
-		snake.body = append(snake.body[1:], newHead)
+		s.body = append(s.body[1:], newHead)
 	}
 
-	snake.SetPosition(newHead.x, newHead.y)
+	s.SetPosition(newHead.x, newHead.y)
 
-	if snake.isCollidingWithSelf() {
+	if s.isCollidingWithSelf() || s.isCollidingWithBorder() {
 		EndGame()
 	}
 
 	// Draw snake
-	for _, c := range snake.body {
+	for _, c := range s.body {
 		screen.RenderCell(c.x, c.y, &tl.Cell{
 			Fg: tl.ColorGreen,
 			Ch: 'o',
@@ -101,44 +96,44 @@ func (snake *Snake) Draw(screen *tl.Screen) {
 	}
 }
 
-func (snake *Snake) Tick(event tl.Event) {
+func (s *Snake) Tick(event tl.Event) {
 	// Find new direction - but you can't go
 	// back from where you came.
 	if event.Type == tl.EventKey {
 		switch event.Key {
 		case tl.KeyArrowRight:
-			if snake.direction != LEFT {
-				snake.direction = RIGHT
+			if s.direction != LEFT {
+				s.direction = RIGHT
 			}
 		case tl.KeyArrowLeft:
-			if snake.direction != RIGHT {
-				snake.direction = LEFT
+			if s.direction != RIGHT {
+				s.direction = LEFT
 			}
 		case tl.KeyArrowUp:
-			if snake.direction != DOWN {
-				snake.direction = UP
+			if s.direction != DOWN {
+				s.direction = UP
 			}
 		case tl.KeyArrowDown:
-			if snake.direction != UP {
-				snake.direction = DOWN
+			if s.direction != UP {
+				s.direction = DOWN
 			}
 		}
 	}
 }
 
-func (snake *Snake) handleFoodCollision() {
-	snake.grow(1)
+func (s *Snake) handleFoodCollision() {
+	s.grow(1)
 }
 
-func (snake *Snake) handleBorderCollision() {
+func (s *Snake) handleBorderCollision() {
 	EndGame()
 }
 
-func (snake *Snake) Collide(collision tl.Physical) {
+func (s *Snake) Collide(collision tl.Physical) {
 	switch collision.(type) {
 	case *Food:
-		snake.handleFoodCollision()
+		s.handleFoodCollision()
 	case *Border:
-		snake.handleBorderCollision()
+		s.handleBorderCollision()
 	}
 }

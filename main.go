@@ -9,6 +9,11 @@ import (
 
 var score = 0
 var game *tl.Game
+var border *Border
+
+func IncreaseScore(amount int) {
+	score += amount
+}
 
 func EndGame() {
 	endLevel := tl.NewBaseLevel(tl.Cell{
@@ -26,7 +31,8 @@ func main() {
 		Bg: tl.ColorBlack,
 	})
 
-	border := NewBorder()
+	border = NewBorder(80, 30)
+
 	snake := NewSnake()
 	food := NewFood()
 
