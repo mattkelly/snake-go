@@ -34,7 +34,6 @@ func (f Food) Size() (int, int) {
 }
 
 func (f *Food) moveToRandomPosition() {
-	// TODO actual range
 	newX := randInRange(1, border.width - 1)
 	newY := randInRange(1, border.height - 1)
 	f.coord.x, f.coord.y = newX, newY
