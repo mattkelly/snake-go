@@ -13,18 +13,18 @@ const (
 
 type Snake struct {
 	*tl.Entity
-	body []Coord
-	bodyLen int
+	body      []Coord
+	bodyLen   int
 	direction Direction
 }
 
 func NewSnake() *Snake {
 	s := new(Snake)
 	s.Entity = tl.NewEntity(5, 5, 1, 1)
-	s.body = []Coord {
-		Coord{3, 5},
-		Coord{4, 5},
-		Coord{5, 5}, // head
+	s.body = []Coord{
+		{3, 5},
+		{4, 5},
+		{5, 5}, // head
 	}
 	// Need to track length explicitly for the case
 	// where we're actively growing
@@ -34,7 +34,7 @@ func NewSnake() *Snake {
 }
 
 func (s *Snake) Head() *Coord {
-	return &s.body[len(s.body) - 1]
+	return &s.body[len(s.body)-1]
 }
 
 func (s *Snake) grow(amount int) {
@@ -46,7 +46,7 @@ func (s *Snake) isGrowing() bool {
 }
 
 func (s *Snake) isCollidingWithSelf() bool {
-	for i := 0; i < len(s.body) - 1; i++ {
+	for i := 0; i < len(s.body)-1; i++ {
 		if *s.Head() == s.body[i] {
 			return true
 		}

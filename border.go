@@ -5,7 +5,7 @@ import tl "github.com/JoelOtter/termloop"
 type Border struct {
 	*tl.Entity
 	width, height int
-	coords map[Coord]int
+	coords        map[Coord]int
 }
 
 func NewBorder(width, height int) *Border {
@@ -22,7 +22,7 @@ func NewBorder(width, height int) *Border {
 	}
 
 	// Left and right
-	for y := 0; y < height + 1; y++ {
+	for y := 0; y < height+1; y++ {
 		b.coords[Coord{0, y}] = 1
 		b.coords[Coord{b.width, y}] = 1
 	}
@@ -36,7 +36,7 @@ func (b *Border) Contains(coord Coord) bool {
 }
 
 func (b *Border) Draw(screen *tl.Screen) {
-	if (b == nil) {
+	if b == nil {
 		return
 	}
 
