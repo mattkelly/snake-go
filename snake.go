@@ -122,7 +122,7 @@ func (s *Snake) Tick(event tl.Event) {
 }
 
 func (s *Snake) handleFoodCollision() {
-	s.grow(1)
+	s.grow(5)
 }
 
 func (s *Snake) handleBorderCollision() {
