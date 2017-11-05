@@ -2,22 +2,24 @@ package main
 
 import tl "github.com/JoelOtter/termloop"
 
-type Direction int
+type direction int
 
 const (
-	RIGHT Direction = iota
-	LEFT
-	UP
-	DOWN
+	right direction = iota
+	left
+	up
+	down
 )
 
+// Snake is the snake.
 type Snake struct {
 	*tl.Entity
 	body      []Coord
 	bodyLen   int
-	direction Direction
+	direction direction
 }
 
+// NewSnake creates a new Snake with a default length and position.
 func NewSnake() *Snake {
 	s := new(Snake)
 	s.Entity = tl.NewEntity(5, 5, 1, 1)
@@ -29,11 +31,11 @@ func NewSnake() *Snake {
 	// Need to track length explicitly for the case
 	// where we're actively growing
 	s.bodyLen = len(s.body)
-	s.direction = RIGHT
+	s.direction = right
 	return s
 }
 
-func (s *Snake) Head() *Coord {
+func (s *Snake) head() *Coord {
 	return &s.body[len(s.body)-1]
 }
 
@@ -47,7 +49,7 @@ func (s *Snake) isGrowing() bool {
 
 func (s *Snake) isCollidingWithSelf() bool {
 	for i := 0; i < len(s.body)-1; i++ {
-		if *s.Head() == s.body[i] {
+		if *s.head() == s.body[i] {
 			return true
 		}
 	}
@@ -55,23 +57,23 @@ func (s *Snake) isCollidingWithSelf() bool {
 }
 
 func (s *Snake) isCollidingWithBorder() bool {
-	return border.Contains(*s.Head())
+	return border.Contains(*s.head())
 }
 
-// Draw() is called every frame, whereas Tick() is
-// only called on events.
+// Draw is called every frame so it calculates new positions and checks
+// for collisions in addition to just drawing the Snake.
 func (s *Snake) Draw(screen *tl.Screen) {
 	// Update position based on direction
-	newHead := *s.Head()
+	newHead := *s.head()
 	switch s.direction {
-	case RIGHT:
-		newHead.x += 1
-	case LEFT:
-		newHead.x -= 1
-	case UP:
-		newHead.y -= 1
-	case DOWN:
-		newHead.y += 1
+	case right:
+		newHead.x++
+	case left:
+		newHead.x--
+	case up:
+		newHead.y--
+	case down:
+		newHead.y++
 	}
 
 	if s.isGrowing() {
@@ -96,28 +98,41 @@ func (s *Snake) Draw(screen *tl.Screen) {
 	}
 }
 
+// Tick handles keypress events
 func (s *Snake) Tick(event tl.Event) {
 	// Find new direction - but you can't go
 	// back from where you came.
 	if event.Type == tl.EventKey {
 		switch event.Key {
 		case tl.KeyArrowRight:
-			if s.direction != LEFT {
-				s.direction = RIGHT
+			if s.direction != left {
+				s.direction = right
 			}
 		case tl.KeyArrowLeft:
-			if s.direction != RIGHT {
-				s.direction = LEFT
+			if s.direction != right {
+				s.direction = left
 			}
 		case tl.KeyArrowUp:
-			if s.direction != DOWN {
-				s.direction = UP
+			if s.direction != down {
+				s.direction = up
 			}
 		case tl.KeyArrowDown:
-			if s.direction != UP {
-				s.direction = DOWN
+			if s.direction != up {
+				s.direction = down
 			}
 		}
+	}
+}
+
+// Collide is called when a collision occurs, since this Snake is a
+// DynamicPhysical that can handle its own collisions. Here we check what
+// we're colliding with and handle it accordingly.
+func (s *Snake) Collide(collision tl.Physical) {
+	switch collision.(type) {
+	case *Food:
+		s.handleFoodCollision()
+	case *Border:
+		s.handleBorderCollision()
 	}
 }
 
@@ -127,13 +142,4 @@ func (s *Snake) handleFoodCollision() {
 
 func (s *Snake) handleBorderCollision() {
 	EndGame()
-}
-
-func (s *Snake) Collide(collision tl.Physical) {
-	switch collision.(type) {
-	case *Food:
-		s.handleFoodCollision()
-	case *Border:
-		s.handleBorderCollision()
-	}
 }

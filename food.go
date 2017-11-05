@@ -6,11 +6,15 @@ import (
 	tl "github.com/JoelOtter/termloop"
 )
 
+// Food handles its own collisions with a Snake and places itself randomly
+// on the screen. Since there's no top-level controller, it also updates the
+// score.
 type Food struct {
 	*tl.Entity
 	coord Coord
 }
 
+// NewFood creates a new Food at a random position.
 func NewFood() *Food {
 	f := new(Food)
 	f.Entity = tl.NewEntity(1, 1, 1, 1)
@@ -18,6 +22,7 @@ func NewFood() *Food {
 	return f
 }
 
+// Draw draws the Food as a default character.
 func (f *Food) Draw(screen *tl.Screen) {
 	screen.RenderCell(f.coord.x, f.coord.y, &tl.Cell{
 		Fg: tl.ColorGreen,
@@ -25,12 +30,24 @@ func (f *Food) Draw(screen *tl.Screen) {
 	})
 }
 
+// Position returns the x,y position of this Food.
 func (f Food) Position() (int, int) {
 	return f.coord.x, f.coord.y
 }
 
+// Size returns the size of this Food - always 1x1.
 func (f Food) Size() (int, int) {
 	return 1, 1
+}
+
+// Collide handles collisions with the Snake. It updates the score and places
+// the Food randomly on the screen again.
+func (f *Food) Collide(collision tl.Physical) {
+	switch collision.(type) {
+	case *Snake:
+		// It better be a snake that we're colliding with...
+		f.handleSnakeCollision()
+	}
 }
 
 func (f *Food) moveToRandomPosition() {
@@ -43,14 +60,6 @@ func (f *Food) moveToRandomPosition() {
 func (f *Food) handleSnakeCollision() {
 	f.moveToRandomPosition()
 	IncreaseScore(5)
-}
-
-func (f *Food) Collide(collision tl.Physical) {
-	switch collision.(type) {
-	case *Snake:
-		// It better be a snake that we're colliding with...
-		f.handleSnakeCollision()
-	}
 }
 
 func randInRange(min, max int) int {

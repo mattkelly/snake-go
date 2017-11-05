@@ -13,11 +13,14 @@ var game *tl.Game
 var border *Border
 var scoreText *tl.Text
 
+// IncreaseScore increases the score by the given amount and updates the
+// score text.
 func IncreaseScore(amount int) {
 	score += amount
 	scoreText.SetText(fmt.Sprint(" Score: ", score))
 }
 
+// EndGame should be called when the game ends due to e.g. dying.
 func EndGame() {
 	endLevel := tl.NewBaseLevel(tl.Cell{
 		Bg: tl.ColorRed,
