@@ -120,6 +120,29 @@ func (s *Snake) Tick(event tl.Event) {
 			if s.direction != up {
 				s.direction = down
 			}
+		case 0:
+			switch event.Ch {
+			case 'h': fallthrough
+			case 'H':
+				if s.direction != right {
+					s.direction = left
+				}
+			case 'j': fallthrough
+			case 'J':
+				if s.direction != up {
+					s.direction = down
+				}
+			case 'k': fallthrough
+			case 'K':
+				if s.direction != down {
+					s.direction = up
+				}
+			case 'l': fallthrough
+			case 'L':
+				if s.direction != left {
+					s.direction = right
+				}
+			}
 		}
 	}
 }
