@@ -121,24 +121,21 @@ func (s *Snake) Tick(event tl.Event) {
 				s.direction = down
 			}
 		case 0:
+			// Vim mode!
 			switch event.Ch {
-			case 'h': fallthrough
-			case 'H':
+			case 'h', 'H':
 				if s.direction != right {
 					s.direction = left
 				}
-			case 'j': fallthrough
-			case 'J':
+			case 'j', 'J':
 				if s.direction != up {
 					s.direction = down
 				}
-			case 'k': fallthrough
-			case 'K':
+			case 'k', 'K':
 				if s.direction != down {
 					s.direction = up
 				}
-			case 'l': fallthrough
-			case 'L':
+			case 'l', 'L':
 				if s.direction != left {
 					s.direction = right
 				}
