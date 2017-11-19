@@ -25,7 +25,7 @@ func NewFood() *Food {
 // Draw draws the Food as a default character.
 func (f *Food) Draw(screen *tl.Screen) {
 	screen.RenderCell(f.coord.x, f.coord.y, &tl.Cell{
-		Fg: tl.ColorGreen,
+		Fg: tl.ColorRed,
 		Ch: '*',
 	})
 }
