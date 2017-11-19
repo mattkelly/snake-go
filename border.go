@@ -14,18 +14,19 @@ type Border struct {
 func NewBorder(width, height int) *Border {
 	b := new(Border)
 	b.Entity = tl.NewEntity(1, 1, 1, 1)
-	b.width, b.height = width, height
+	// Subtract one to account for bottom and right border
+	b.width, b.height = width-1, height-1
 
 	b.coords = make(map[Coord]int)
 
 	// Top and bottom
-	for x := 0; x < width; x++ {
+	for x := 0; x < b.width; x++ {
 		b.coords[Coord{x, 0}] = 1
 		b.coords[Coord{x, b.height}] = 1
 	}
 
 	// Left and right
-	for y := 0; y < height+1; y++ {
+	for y := 0; y < b.height+1; y++ {
 		b.coords[Coord{0, y}] = 1
 		b.coords[Coord{b.width, y}] = 1
 	}
