@@ -1,11 +1,13 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"math/rand"
 	"time"
 
 	tl "github.com/JoelOtter/termloop"
+	"github.com/nsf/termbox-go"
 )
 
 var score = 0
@@ -30,6 +32,9 @@ func EndGame() {
 }
 
 func main() {
+	isFullscreen := flag.Bool("fullscreen", false, "Play fullscreen!")
+	flag.Parse()
+
 	rand.Seed(time.Now().UnixNano())
 	game = tl.NewGame()
 
@@ -37,7 +42,13 @@ func main() {
 		Bg: tl.ColorBlack,
 	})
 
-	border = NewBorder(80, 30)
+	width, height := 80, 30
+	if *isFullscreen {
+		// Must initialize Termbox before getting the terminal size
+		termbox.Init()
+		width, height = termbox.Size()
+	}
+	border = NewBorder(width, height)
 
 	snake := NewSnake()
 	food := NewFood()
