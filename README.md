@@ -7,7 +7,7 @@ Play snake in your terminal. Built using [Termloop](https://github.com/JoelOtter
 <img src="https://raw.githubusercontent.com/mattkelly/snake-go/975b886ca3cfed761b88b65f545af0fdf7741543/snake-go-demo.gif" width=400>
 
 # Instructions
-- Get it: `go get github.com/mattkelly/snake-go`
+- Get it: `go get -u github.com/mattkelly/snake-go`
 - Play it: `$GOPATH/bin/snake-go`
 
 # Contributing
