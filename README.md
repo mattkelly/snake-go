@@ -15,4 +15,4 @@ Please do.
 - [ ] Overlay message box with score upon dying (don't just flash red)
 - [ ] Implement game difficulty options: easy, normal, hard
 - [x] (Maybe) Dynamically size border based on e.g. terminal size, user input
-- [ ] (Maybe) Implement "play again" option
+- [x] (Maybe) Implement "play again" option
