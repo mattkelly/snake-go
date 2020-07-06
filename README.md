@@ -4,15 +4,7 @@
 
 Play snake in your terminal. Built using [Termloop](https://github.com/JoelOtter/termloop).
 
-<img src="https://raw.githubusercontent.com/mattkelly/snake-go/975b886ca3cfed761b88b65f545af0fdf7741543/snake-go-demo.gif" width=400>
 
 # Instructions
-- Get it: `go get -u github.com/mattkelly/snake-go`
+- Get it: `go get -u github.com/cattleguard/snake-go`
 - Play it: `$GOPATH/bin/snake-go`
-
-# Contributing
-Please do.
-- [ ] Overlay message box with score upon dying (don't just flash red)
-- [ ] Implement game difficulty options: easy, normal, hard
-- [x] (Maybe) Dynamically size border based on e.g. terminal size, user input
-- [x] (Maybe) Implement "play again" option
