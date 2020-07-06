@@ -17,18 +17,47 @@ type Food struct {
 // NewFood creates a new Food at a random position.
 func NewFood() *Food {
 	f := new(Food)
-	f.Entity = tl.NewEntity(1, 1, 1, 1)
+	var foodCanvas tl.Canvas
+	if *isRealFood {
+		runeSlice := []string{"🐁", "🐀", "🐇", "🐟", "🐠", "🐤", "🐥", "🐣", "🐸", "🐭", "🐰", "🥚"}
+		victim := runeSlice[rand.Intn(len(runeSlice))]
+		foodCanvas = tl.CanvasFromString(victim)
+	} else {
+		foodCanvas = tl.CanvasFromString("*")
+	}
+
+	f.Entity = tl.NewEntityFromCanvas(1, 1, foodCanvas)
+
+	if !*isRealFood {
+		f.Entity.SetCell(f.coord.x, f.coord.y, &tl.Cell{
+			 		Fg: tl.ColorRed,
+			 		Ch: '*',
+			 	})
+	}
+
 	f.moveToRandomPosition()
 	return f
 }
 
+// We don't really need to redraw the same item right now. 
+// Will probably need this to draw new food items in a single Level though.
 // Draw draws the Food as a default character.
-func (f *Food) Draw(screen *tl.Screen) {
-	screen.RenderCell(f.coord.x, f.coord.y, &tl.Cell{
-		Fg: tl.ColorRed,
-		Ch: '*',
-	})
-}
+//func (f *Food) Draw(screen *tl.Screen) {
+	// if *isRealFood {
+	// 	runeSlice := []rune{'🐁', '🐀', '🐇', '🐟', '🐠', '🐤', '🐥', '🐣', '🐸', '🐭', '🐰', '🥚'}
+	// 	victim := runeSlice[rand.Intn(len(runeSlice))]
+	// 	screen.RenderCell(f.coord.x, f.coord.y, &tl.Cell{
+	// 		Fg: tl.ColorRed,
+	// 		Ch: victim,
+	// 	})
+	// } else {
+	// 	screen.RenderCell(f.coord.x, f.coord.y, &tl.Cell{
+	// 		Fg: tl.ColorRed,
+	// 		Ch: '*',
+	// 	})
+	// }
+	//screen.RenderCell(f.Entity)
+//}
 
 // Position returns the x,y position of this Food.
 func (f Food) Position() (int, int) {
@@ -37,7 +66,12 @@ func (f Food) Position() (int, int) {
 
 // Size returns the size of this Food - always 1x1.
 func (f Food) Size() (int, int) {
-	return 1, 1
+	// Emoji characters are wider and need a double hit box
+	if *isRealFood{
+		return 2, 1
+	} else {
+		return 1, 1
+	}
 }
 
 // Collide handles collisions with the Snake. It updates the score and places
