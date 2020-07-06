@@ -15,6 +15,7 @@ var game *tl.Game
 var border *Border
 var scoreText *tl.Text
 var isFullscreen *bool
+var isRealFood *bool
 
 type endgameScreen struct {
 	*tl.BaseLevel
@@ -83,6 +84,7 @@ func newMainLevel(isFullscreen *bool) tl.Level{
 
 func main() {
 	isFullscreen = flag.Bool("fullscreen", false, "Play fullscreen!")
+	isRealFood = flag.Bool("realfood", false, "Realistic food options")
 
 	flag.Parse()
 	rand.Seed(time.Now().UnixNano())
