@@ -11,6 +11,9 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    env:
+      GO111MODULE: on
+      
     steps:
 
     - name: Set up Go 1.x
@@ -43,3 +46,10 @@ jobs:
         # golangci-lint docker release tag
         golangci_lint_version: 1.23 # optional, default is v1.23. Setting this follows guidance to not "break" all builds by blanket default change.
         args: "run"
+        
+    - name: Checkout Source
+      uses: actions/checkout@v2
+    - name: Run Gosec Security Scanner
+      uses: securego/gosec@master
+      with:
+        args: ./...
