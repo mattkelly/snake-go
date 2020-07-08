@@ -37,6 +37,9 @@ jobs:
       
     - name: golangci-lint
       uses: actions-contrib/golangci-lint@v1
+      env:
+        GOROOT: ""
       with:
         # golangci-lint docker release tag
         golangci_lint_version: 1.23 # optional, default is v1.23. Setting this follows guidance to not "break" all builds by blanket default change.
+        args: "run"
