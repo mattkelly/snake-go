@@ -66,7 +66,11 @@ func newMainLevel(isFullscreen *bool) tl.Level{
 	width, height := 80, 30
 	if *isFullscreen {
 		// Must initialize Termbox before getting the terminal size
-		termbox.Init()
+		err := termbox.Init()
+		if err != nil {
+			panic(err)
+		}
+		defer termbox.Close()
 		width, height = termbox.Size()
 	}
 	border = NewBorder(width, height)
